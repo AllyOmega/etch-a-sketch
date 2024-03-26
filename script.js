@@ -146,6 +146,9 @@ colorField.addEventListener('change', () => {
 
   
 function changeSquareColor(square, event) {
+    if (square.getAttribute('class') !== 'square') {
+        return;
+    }
     // Force apply for flood fill on mouse down
     if (fillCheck.checked && (event.type === 'mousedown' || event.type === 'touchstart')) {
         let targetSquare = square;
