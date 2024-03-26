@@ -40,13 +40,26 @@ gridContainer.addEventListener('mousemove', (event) => {
     }
 }, true);
 
-document.addEventListener('mousedown', (event) => {
+gridContainer.addEventListener('mousedown', (event) => {
     if (event.target.classList.contains('square')) {
         event.preventDefault();
         changeSquareColor(event.target, event);
     }
 }, true);
 
+// Prevent dragging images and text selection
+gridContainer.addEventListener('touchstart', (event) => {
+    event.preventDefault(); // Prevent default touch behavior (scrolling, zooming, etc.)
+    changeSquareColor(event.target, event); // Change color on initial touch
+}, { passive: false }); // { passive: false } to allow preventDefault
+
+// Handle color change on dragging over squares with touch
+gridContainer.addEventListener('touchmove', (event) => {
+    event.preventDefault(); // Again, prevent default actions
+    let touchLocation = event.targetTouches[0]; // Get the first touch location
+    let targetElement = document.elementFromPoint(touchLocation.clientX, touchLocation.clientY); // Find the element at the touch point
+    changeSquareColor(targetElement, event); // Change the color of the touched square
+}, { passive: false });
 
 
 //function button relevant stuff
@@ -134,7 +147,7 @@ colorField.addEventListener('change', () => {
   
 function changeSquareColor(square, event) {
     // Force apply for flood fill on mouse down
-    if (fillCheck.checked && event.type === 'mousedown') {
+    if (fillCheck.checked && (event.type === 'mousedown' || event.type === 'touchstart')) {
         let targetSquare = square;
         let targetIndex = Array.from(gridContainer.children).indexOf(targetSquare);
         let targetCol = targetIndex % numOfSquares;
@@ -147,7 +160,7 @@ function changeSquareColor(square, event) {
         }
     }
     // Handle other modes on mouseover with mouse button pressed or directly on mousedown
-    else if (event.buttons === 1 || event.type === 'mousedown') {
+    else if (event.buttons === 1 || event.type === 'mousedown' || event.type ==='touchmove') {
         if (rainbowCheck.checked) {
             square.style.backgroundColor = randomRGB();
             square.style.opacity = '1'; // Reset opacity for non-opacity modes
