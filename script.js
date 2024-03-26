@@ -1,7 +1,7 @@
 
-let numOfSquares= 8;
+let numOfSquares= 32;
 
-let gridSize = 400;
+let gridSize = 600;
 
 let squareSize = gridSize/numOfSquares;
 
@@ -10,7 +10,7 @@ let color = 'rgb(0, 0, 0)';
 let buttonContainer = document.createElement('div');
 buttonContainer.setAttribute('id', 'button-container');
 
-buttonContainer.style.cssText = "display: flex; flex-direction: row; flex: 1; gap: 20px;margin: 20px; align-items: center;";
+buttonContainer.style.cssText = "display: flex; flex-direction: row; flex: 1; gap: 20px; margin: 20px; flex-wrap: wrap; align-items: center;";
 
 
 let gridContainer = document.querySelector('#grid-container');
@@ -19,6 +19,7 @@ let eraseButton = document.createElement('button');
 let sizeField = document.createElement('input');
 let sizeButton = document.createElement('button');
 let colorField = document.createElement('input');
+let drawCheck = document.createElement('input');
 let fillCheck = document.createElement('input');
 let rainbowCheck = document.createElement('input');
 let opacityCheck = document.createElement('input');
@@ -32,7 +33,7 @@ refresh(numOfSquares);
 
 gridContainer.style.cssText = `height: ${gridSize}px; width: ${gridSize}px;` ;
 
-gridContainer.addEventListener('mouseover', (event) => {
+gridContainer.addEventListener('mousemove', (event) => {
     if (event.target.classList.contains('square')) {
         event.preventDefault();
         changeSquareColor(event.target, event);
@@ -64,25 +65,45 @@ colorField.setAttribute('type', 'color');
 colorField.setAttribute('id', 'color-field');
 colorField.value = color;
 
-rainbowCheck.setAttribute('type', 'checkbox');
+drawCheck.setAttribute('type', 'radio');
+drawCheck.setAttribute('name', 'mode');
+drawCheck.checked = true;
 
-opacityCheck.setAttribute('type', 'checkbox');
+rainbowCheck.setAttribute('type', 'radio');
+rainbowCheck.setAttribute('name', 'mode');
+
+opacityCheck.setAttribute('type', 'radio');
+opacityCheck.setAttribute('name','mode');
 
 
 
-fillCheck.setAttribute('type', 'checkbox');
+fillCheck.setAttribute('type', 'radio');
+fillCheck.setAttribute('name', 'mode');
 fillCheck.setAttribute('id', 'fill-check');
 
 let fillSpan = document.createElement('span');
-fillSpan.textContent ="fill toggle:"
+fillSpan.textContent ="fill mode:"
+
+let drawSpan = document.createElement('span');
+drawSpan.textContent = "draw mode:"
+
+let rainbowSpan = document.createElement('span');
+rainbowSpan.textContent = "rainbow mode:"
+
+let pencilSpan = document.createElement('span');
+pencilSpan.textContent = "pencil mode:"
 
 buttonContainer.appendChild(sizeField);
 buttonContainer.appendChild(sizeButton);
 buttonContainer.appendChild(eraseButton);
 buttonContainer.appendChild(colorField);
+buttonContainer.appendChild(drawSpan);
+buttonContainer.appendChild(drawCheck);
 buttonContainer.appendChild(fillSpan);
 buttonContainer.appendChild(fillCheck);
+buttonContainer.appendChild(rainbowSpan);
 buttonContainer.appendChild(rainbowCheck);
+buttonContainer.appendChild(pencilSpan);
 buttonContainer.appendChild(opacityCheck);
 
 document.body.insertBefore(buttonContainer, gridContainer);
@@ -95,7 +116,7 @@ sizeButton.addEventListener('click', () => {
 
 eraseButton.addEventListener('click', () => {
 
-    let squares = document.querySelectorAll('.square');
+    const squares = document.querySelectorAll('.square');
 
     squares.forEach((square) => {
         square.style.backgroundColor = 'rgb(255,255,255)';
