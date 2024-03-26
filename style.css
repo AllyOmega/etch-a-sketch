@@ -18,6 +18,10 @@ body {
     background-color: lightgray;
 }
 
-#title, #erase-button {
+#title {
     margin-bottom: 50px;
+}
+
+button, input {
+    height: 40px;
 }
